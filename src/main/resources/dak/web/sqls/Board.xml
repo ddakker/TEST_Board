@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="Board">
+	
+	<statement id="SELECT_BOARD_CONFIG" resultClass="java.util.HashMap">
+  			-- FILE : Board.xml
+  			-- KEY  : SELECT_BOARD_CONFIG
+			SELECT b_boardName, b_login, b_admin, b_reply, b_comment
+			FROM board_config
+			WHERE b_boardCode = #boardCode#			
+  	</statement>
+  	
+  	<statement id="SELECT_BOARD_LIST" resultClass="java.util.HashMap">
+  			-- FILE : Board.xml
+  			-- KEY  : SELECT_BOARD_LIST
+			SELECT b_boardCode, b_boardName, b_login, b_admin, b_reply, b_comment
+			FROM board_config
+  	</statement>
+  	
+	<insert id="INSERT_WRITE">
+  		<selectKey resultClass="long" keyProperty="seq" >
+			SELECT IFNULL( MAX(B_SEQ), 0) + 1 FROM board
+		</selectKey>		
+		INSERT INTO board (b_seq,b_list,b_level,b_ridx,b_id,b_name,b_subject,b_content,b_regdate,b_editdate,b_pwd,b_ip,b_secret,b_boardcode)
+	   			  		  VALUES
+				  		  (#seq#,#b_list#,#b_level#,#b_ridx#,#id#,#name#,#subject#,#content#,now(),now(),#pwd#,#ip#,#secret#,#boardCode#)
+	</insert>
+	
+	<insert id="INSERT_FILE_WRITE">
+  		<selectKey resultClass="long" keyProperty="seq" >
+			SELECT IFNULL( MAX(f_SEQ), 0) + 1 FROM board_file;
+		</selectKey>		
+		INSERT INTO board_file (f_seq,f_originalName, f_physicalName, b_seq)
+	   			  		  VALUES
+				  		  (#seq#,#originalFileName#,#physicalFileName#,#b_seq#)
+	</insert>
+	
+	<statement id="SELECT_WRITE_BEFORE_INFO" resultClass="long">
+		-- FILE : Board.xml
+  		-- KEY  : SELECT_WRITE_BEFORE_INFO 
+		SELECT IFNULL( MAX(b_list), 0) + 1 
+		FROM board
+		WHERE b_boardCode = #boardCode#
+	</statement>
+	
+	<statement id="SELECT_REPLY_BEFORE_INFO" resultClass="java.util.HashMap">
+		-- FILE : Board.xml
+  		-- KEY  : SELECT_REPLY_BEFORE_INFO  
+		SELECT b_list, b_level, b_ridx 
+		FROM board
+		WHERE b_seq = #b_seq#
+	</statement>
+	
+	<statement id="SELECT_REPLY_BEFORE_UPDATE_INFO" resultClass="java.util.HashMap">
+		-- FILE : Board.xml
+  		-- KEY  : SELECT_REPLY_BEFORE_UPDATE_INFO  
+		SELECT b_seq FROM board 
+		WHERE b_boardCode = #boardCode#
+		AND b_list = #b_list# AND b_ridx >= #b_ridx#
+	</statement>
+	
+	<statement id="UPDATE_REPLY_RIDX_INCRE" resultClass="int">
+  			-- FILE : Board.xml
+  			-- KEY  : UPDATE_REPLY_RIDX_INCRE
+  			UPDATE board SET b_ridx = b_ridx + 1
+			WHERE b_seq = #seq#
+  	</statement>
+		
+	<statement id="SELECT_LIST_INFO" resultClass="java.util.HashMap">
+  			-- FILE : Board.xml
+  			-- KEY  : SELECT_LIST_INFO
+  			SELECT COUNT(B_SEQ) TOTAL_COUNT,
+				   CEIL(COUNT(B_SEQ)/#pageSize#) TOTAL_PAGE
+			FROM board
+			WHERE B_boardCode = #boardCode#
+			 
+			<isEqual property="searchKind" compareValue="1">
+			AND (b_subject LIKE #searchStr#)
+			</isEqual>
+			
+			<isEqual property="searchKind" compareValue="2">
+			AND (b_id LIKE #searchStr# OR b_name LIKE #searchStr#)
+			</isEqual>			
+			
+			<isEqual property="searchKind" compareValue="3">
+			AND (b_content LIKE #searchStr#)
+			</isEqual>
+			 
+  	</statement>
+  	
+  	<statement id="SELECT_LIST" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+  		
+  			-- FILE : Board.xml
+  			-- KEY  : SELECT_LIST 1
+			SELECT b.b_seq,
+				   b.b_level,
+				   b.b_id,
+				   b.b_name,
+				   b.b_subject,
+				   Left(b.b_regdate, 10) as b_regdate2,
+				   DATE_FORMAT(b_regdate, '%Y.%m.%d' ) as b_regdate2,
+				   b.b_hit,
+				   b.b_secret,
+				   b.b_delete,
+				   (select IFNULL(count(c_seq), 0) from board_comment where b_seq = b.b_seq) as comment_cnt
+			FROM board b
+			WHERE b_boardcode = #boardCode#
+			
+			<isEqual property="searchKind" compareValue="1">
+			AND (b_subject LIKE #searchStr#)
+			</isEqual>
+			
+			<isEqual property="searchKind" compareValue="2">
+			AND (b_id LIKE #searchStr# OR b_name LIKE #searchStr#)
+			</isEqual>			
+			
+			<isEqual property="searchKind" compareValue="3">
+			AND (b_content LIKE #searchStr#)
+			</isEqual>
+
+			ORDER BY b_list DESC, b_ridx ASC
+			LIMIT $ofset$, $length$
+  	</statement>
+  	
+  	<statement id="SELECT_CONTENT" resultClass="java.util.HashMap">
+  		
+  			-- FILE : Board.xml
+  			-- KEY  : SELECT_CONTENT 
+			SELECT b_seq,
+				   b_id,
+				   b_name,
+				   b_subject,
+				   b_content,
+				   DATE_FORMAT(b_regdate, '%y.%m.%d %H:%i' ) as b_regdate2,
+				   DATE_FORMAT(b_editdate, '%y.%m.%d %H:%i' ) as b_editdate2,
+				   b_hit,
+				   b_secret,
+				   b_pwd,
+				   (select IFNULL(count(c_seq), 0) from board_comment where b_seq = b.b_seq) as comment_cnt
+			FROM board b
+			WHERE b_seq = #seq#			
+  	</statement>
+  	
+  	<statement id="UPDATE_CONTENT_HIT_INCRE" resultClass="int">
+  			-- FILE : Board.xml
+  			-- KEY  : UPDATE_CONTENT_HIT_INCRE
+  			UPDATE board SET b_hit = b_hit + 1
+			WHERE b_seq = #seq#
+  	</statement>
+	
+	<statement id="SELECT_CONTENT_FILE_LIST" resultClass="java.util.HashMap">
+  			-- FILE : Board.xml
+  			-- KEY  : SELECT_CONTENT_FILE_LIST
+  			SELECT f_seq, f_originalName, f_physicalName
+  			FROM board_file
+			WHERE b_seq = #seq#
+  	</statement>
+  	
+  	<statement id="DELETE_FILE" resultClass="java.lang.Integer">
+  			-- FILE : Board.xml
+  			-- KEY  : SELECT_CONTENT_FILE_LIST
+  			DELETE
+  			FROM board_file
+			WHERE f_seq = #seq#
+  	</statement>
+  	  	
+  	<insert id="INSERT_MENT_WRITE">
+  		<selectKey resultClass="long" keyProperty="seq" >
+			SELECT IFNULL( MAX(C_SEQ), 0) + 1 FROM BOARD_COMMENT;
+		</selectKey>
+		INSERT INTO BOARD_COMMENT (c_seq, c_id, c_name, c_comment, c_regdate, c_pwd, c_ip, b_seq)
+	   			  		  VALUES
+				  		  (#seq#,#id#,#name#,#ment#,now(),#pwd#,#ip#, #b_seq#)
+	</insert>
+	
+	<statement id="SELECT_MENT_LIST" resultClass="java.util.HashMap">
+  		
+  			-- FILE : Board.xml
+  			-- KEY  : SELECT_MENT_LIST 
+			SELECT c_seq,
+				   c_id,
+				   c_name,
+				   c_comment,
+				   DATE_FORMAT(c_regdate, '%y.%m.%d %H:%i' ) as c_regdate2				   
+			FROM board_comment
+			WHERE b_seq = #b_seq#
+			ORDER BY c_regdate ASC
+  	</statement>
+  	
+  	<statement id="SELECT_USER_PWD" resultClass="java.lang.String">
+  		
+  			-- FILE : Board.xml
+  			-- KEY  : SELECT_MENT_LIST 
+			SELECT pwd				   
+			FROM member
+			WHERE id = #id#
+  	</statement>
+  	
+  	<statement id="DELETE_BOARD" resultClass="java.lang.Integer">
+  			-- FILE : Board.xml
+  			-- KEY  : DELETE_BOARD
+  			DELETE 
+  			FROM board
+			WHERE b_seq = #b_seq#
+			
+			<isNotNull property="b_pwd">
+			AND b_pwd = #b_pwd#
+			</isNotNull>
+  	</statement>
+  	
+  	<statement id="UPDATE_BOARD_DELETE_FLAG" resultClass="java.lang.Integer">
+  			-- FILE : Board.xml
+  			-- KEY  : UPDATE_BOARD_DELETE_FLAG
+  			UPDATE board set b_delete = 1
+			WHERE b_seq = #b_seq#
+			
+			<isNotNull property="b_pwd">
+			AND b_pwd = #b_pwd#
+			</isNotNull>
+  	</statement>
+  	
+  	
+  	
+  	<statement id="DELETE_COMMENT" resultClass="java.lang.Integer">
+  			-- FILE : Board.xml
+  			-- KEY  : DELETE_COMMENT
+  			DELETE 
+  			FROM board_comment
+			WHERE c_seq = #c_seq#
+			
+			<isNotNull property="c_pwd">
+			AND c_pwd = #c_pwd#
+			</isNotNull>
+  	</statement>
+  	
+  	
+  	<statement id="SELECT_FILE_NAME" resultClass="java.util.HashMap">
+  		
+  			-- FILE : Board.xml
+  			-- KEY  : SELECT_FILE_NAME 
+			SELECT f_physicalName, f_originalName
+			FROM board_file
+			WHERE f_seq = #f_seq#
+  	</statement>
+  	
+  	<statement id="SELECT_GET_BOARD_PWD" resultClass="java.lang.String">
+  		
+  			-- FILE : Board.xml
+  			-- KEY  : SELECT_GET_BOARD_PWD 
+			SELECT b_pwd
+			FROM board
+			WHERE b_seq = #b_seq#
+  	</statement>
+  	
+  	<statement id="SELECT_GET_MENT_PWD" resultClass="java.lang.String">
+  		
+  			-- FILE : Board.xml
+  			-- KEY  : SELECT_GET_MENT_PWD 
+			SELECT c_pwd
+			FROM board_comment
+			WHERE c_seq = #c_seq#
+  	</statement>
+  	
+  	
+  	<statement id="UPDATE_BOARD" resultClass="java.lang.Integer">
+		-- FILE : Board.xml
+  		-- KEY  : UPDATE_BOARD  
+		UPDATE board SET 
+					   b_name = #name#,
+					   b_subject = #subject#,
+					   b_content = #content#,
+					   b_editdate = now(),
+					   b_pwd = #pwd#,
+					   b_ip = #ip#,
+					   b_secret = #secret#
+		WHERE b_seq = #seq#
+	</statement>
+	
+	<statement id="UPDATE_BOARD_CONFIG" resultClass="java.lang.Integer">
+		-- FILE : Board.xml
+  		-- KEY  : UPDATE_BOARD_CONFIG  
+		UPDATE board_config SET 
+					   b_boardName = #b_boardName#,
+					   b_login = #b_login#,
+					   b_admin = #b_admin#,
+					   b_comment = #b_comment#,
+					   b_reply = #b_reply#
+		WHERE b_boardCode = #b_boardCode#
+	</statement>
+	
+	<insert id="INSERT_BOARD_CONFIG_ADD">
+  		<selectKey resultClass="long" keyProperty="b_boardCode" >
+			SELECT IFNULL( MAX(b_boardCode), 0) + 1 FROM board_config
+		</selectKey>
+		INSERT INTO board_config (b_boardCode,b_boardName,b_login,b_admin,b_comment,b_reply)
+	   			  		  VALUES
+				  		  (#b_boardCode#,#b_boardName#,#b_login#,#b_admin#,#b_comment#,#b_reply#)
+	</insert>
+</sqlMap>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<result>
+#if( $message )
+    <message><![CDATA[$message]]></message>
+#else
+    <message/>
+#end
+
+#if( $exception )
+    <exception><![CDATA[$exception]]></exception>
+#else
+    <exception/>
+#end
+
+</result>

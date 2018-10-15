@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+<struts-config>
+    
+    <action-mappings>
+    
+    	<!-- 관리자 시작 -->
+    	
+		<!-- 게시판 관리 폼 -->	
+		<action path="/board/manager"
+	            type="dak.web.board.BoardAction"
+	            scope="request"
+	            parameter="boardList">
+			<forward name="success"   path="/board/manager.jsp" />
+			<forward name="error"	  path="/board/error.jsp" />
+	    </action>		
+  		<!-- 관리자 끝 -->
+  		
+  		<!-- 게시판 관리 수정 실행 -->
+		<action path="/board/boardConfigEdit"
+	            type="dak.web.board.BoardAction"
+	            scope="request"
+	            parameter="boardConfigEdit">
+			<forward name="success"   path="/board/manager.do" redirect="true" />
+			<forward name="error"	  path="/board/error.jsp" />
+	    </action>
+	    <!-- 게시판 관리 수정 실행 -->
+		<action path="/board/boardConfigAdd"
+	            type="dak.web.board.BoardAction"
+	            scope="request"
+	            parameter="boardConfigAdd">
+			<forward name="success"   path="/board/manager.do" redirect="true" />
+			<forward name="error"	  path="/board/error.jsp" />
+	    </action>
+				
+  		<!-- 관리자 끝 -->
+  		
+  		
+  		
+		<!-- Board 시작 -->
+		<!-- 쓰기 폼 -->
+		<action path="/board/write_form" 
+				type="org.apache.struts.actions.ForwardAction" 
+				scope="request"
+				parameter="/board/write_form.jsp" />
+		
+		<!-- 파일 업로드 폼 -->
+		<action path="/board/fileUpload_form" 
+				type="org.apache.struts.actions.ForwardAction" 
+				scope="request"
+				parameter="/board/upload.jsp" />
+		
+		<!-- 리스트 -->
+		<action path="/board/list"
+	            type="dak.web.board.BoardAction"
+	            scope="request"
+	            parameter="list">
+			<forward name="success"   path="/board/list.jsp" />
+			<forward name="error"	  path="/board/error.jsp" />
+	    </action>
+	    <!-- 상세보기 -->
+	    <action path="/board/content"
+	            type="dak.web.board.BoardAction"
+	            scope="request"
+	            parameter="content">
+	        <forward name="error"	  path="/board/content.jsp" />
+	        <forward name="error"	  path="/board/error.jsp" />
+			<forward name="successVM" path="/vm/list.vm" />
+			<forward name="errorVM"	  path="/vm/error.vm" />
+	    </action>
+	    <!-- 수정폼 -->
+	    <action path="/board/edit_form"
+	            type="dak.web.board.BoardAction"
+	            scope="request"
+	            parameter="content">
+	        <forward name="success"	  path="/board/edit_form.jsp" />
+	        <forward name="error"	  path="/board/error.jsp" />
+			<forward name="successVM" path="/vm/list.vm" />
+			<forward name="errorVM"	  path="/vm/error.vm" />
+	    </action>
+	    <!-- 수정 실행 -->
+	    <action path="/board/edit"
+	            type="dak.web.board.BoardAction"
+	            scope="request"
+	            parameter="edit">
+	        <forward name="error"	  path="/board/error.jsp" />
+	    </action>
+	    <!-- 게시글 삭제 -->
+		<action path="/board/delete"
+	            type="dak.web.board.BoardAction"
+	            scope="request"
+	            parameter="delete">
+			<forward name="success"   path="/board/delete.jsp" />
+			<forward name="error"	  path="/board/error.jsp" />
+	    </action>
+	    <!-- 게시글 쓰기 -->
+	    <action path="/board/write"
+	            type="dak.web.board.BoardAction"
+	            scope="request"
+	            parameter="write">
+			<forward name="success"   path="/board/list.do" redirect="true" />
+			<forward name="error"	  path="/board/error.jsp" />
+	    </action>
+	    <!-- 댓글 쓰기 -->
+	    <action path="/board/mentWrite"
+	            type="dak.web.board.BoardAction"
+	            scope="request"
+	            parameter="mentWrite">
+			<forward name="successVM" path="/vm/list.vm" />
+			<forward name="error"	  path="/board/error.jsp" />
+			<forward name="errorVM"	  path="/vm/error.vm" />
+	    </action>
+	    <!-- 댓글 목록 -->
+	    <action path="/board/mentList"
+	            type="dak.web.board.BoardAction"
+	            scope="request"
+	            parameter="mentList">
+			<forward name="successVM" path="/vm/list.vm" />
+			<forward name="error"	  path="/board/error.jsp" />
+			<forward name="errorVM"	  path="/vm/error.vm" />
+	    </action>
+	    <!-- 댓글 삭제 -->
+	    <action path="/board/mentDelete"
+	            type="dak.web.board.BoardAction"
+	            scope="request"
+	            parameter="mentDelete">
+			<forward name="successVM" path="/vm/list.vm" />
+			<forward name="error"	  path="/board/error.jsp" />
+			<forward name="errorVM"	  path="/vm/error.vm" />
+	    </action>
+	    <!-- 파일 업로드(단건) -->
+	    <action path="/board/fileUpload"
+	            type="dak.web.board.BoardAction"
+	            scope="request"
+	            parameter="fileUpload">
+			<forward name="success"   path="/board/upload.jsp" />
+			<forward name="error"	  path="/board/error.jsp" />
+	    </action>
+	    <!-- 파일 삭제(다건 가능) -->
+	    <action path="/board/fileDelete"
+	            type="dak.web.board.BoardAction"
+	            scope="request"
+	            parameter="fileDelete">
+			<forward name="successVM" path="/vm/list.vm" />
+			<forward name="errorVM"	  path="/vm/error.vm" />
+	    </action>
+	    <!-- 글 비밀번호 체크 -->
+	    <action path="/board/getBoardPwd"
+	            type="dak.web.board.BoardAction"
+	            scope="request"
+	            parameter="getBoardPwd">
+			<forward name="successVM" path="/vm/list.vm" />
+			<forward name="errorVM"	  path="/vm/error.vm" />
+	    </action>
+	    <!-- 파일 다운로드 -->
+	    <action path="/board/fileDownLoad"
+	            type="dak.web.board.BoardAction"
+	            scope="request"
+	            parameter="fileDownLoad">
+			<forward name="success"   path="/board/error.jsp" /> <!-- 의미 없음 -->
+			<forward name="error"	  path="/board/error.jsp" />
+	    </action>
+		<!-- Board 끝 -->
+		
+		
+		<action path="/test1"
+	            type="dak.web.board.BoardAction"
+	            scope="request"
+	            parameter="test1">
+			<forward name="errorVM"	  path="/vm/error.vm" />
+	    </action>
+	    <action path="/test2"
+	            type="dak.web.board.BoardAction"
+	            scope="request"
+	            parameter="test2">
+			<forward name="errorVM"	  path="/vm/error.vm" />
+	    </action>
+		
+    </action-mappings>
+    
+    <message-resources parameter="dak.web.framework.resources.ApplicationResources"/>
+    
+</struts-config>

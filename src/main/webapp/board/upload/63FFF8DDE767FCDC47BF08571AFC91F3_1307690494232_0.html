@@ -1,0 +1,19 @@
+<script>
+
+
+//TestClass = new TestClass();
+function TestClass(){
+}
+
+TestClass.prototype.testCall = function(){
+	alert("1");
+	this.testCall2();
+}
+TestClass.prototype.testCall2 = function(){
+	alert("12");
+}
+
+var testClass = new TestClass();
+alert(testClass.testCall());
+
+</script>

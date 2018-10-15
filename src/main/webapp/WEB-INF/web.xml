@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="euc-kr"?>
+<web-app>
+	<display-name>
+
+	</display-name>
+
+	<!-- Standard Action Servlet Configuration -->
+	<servlet>
+		<servlet-name>action</servlet-name>
+		<!-- <servlet-class>org.apache.struts.action.ActionServlet</servlet-class> -->
+		<servlet-class>
+			dak.web.framework.servlet.ActionServlet
+		</servlet-class>
+		<init-param>
+			<param-name>config</param-name>
+			<param-value>/WEB-INF/struts-config.xml</param-value>
+		</init-param>
+		<init-param>
+			<param-name>upload_path</param-name>
+			<param-value>
+				D:/temp
+			</param-value>
+		</init-param>
+		<init-param>
+			<param-name>upload_maxSize</param-name>
+			<param-value>
+				10
+			</param-value>
+		</init-param>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+
+
+	<!-- Standard Action Servlet Mapping -->
+	<servlet-mapping>
+		<servlet-name>action</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>velocity</servlet-name>
+		<servlet-class>
+			org.apache.velocity.tools.view.servlet.VelocityViewServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>velocity</servlet-name>
+		<url-pattern>*.vm</url-pattern>
+	</servlet-mapping>
+
+	<!--  
+	<filter>
+		<filter-name>EncodingFilter</filter-name>
+		<filter-class>
+			dak.web.framework.filter.EncodingFilter
+		</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>EUC-KR</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>EncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	-->
+	
+	<!-- The Usual Welcome File List -->
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+
+	<!--<taglib>
+		<taglib-uri>/WEB-INF/tlds/struts-bean.tld</taglib-uri>
+		<taglib-location>/WEB-INF/tlds/struts-bean.tld</taglib-location>
+	</taglib>-->
+	
+	<!--
+	Tomcat conf/server.xml
+	<Context path="/TEST_BOARD" docBase="D:\eclipse_work_flex\Study\TEST_Board" reloadable="false" workDir="D:\eclipse_work_flex\Study\TEST_Board\work">
+		<Resource name="jdbc/mysqlConn" auth="Container" type="javax.sql.DataSource" 
+		maxActive="100"
+		maxIdle="30"
+		maxWait="10000" 
+		username="lnjsys"
+		password="lnjsys123" 
+		driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://210.180.41.225:3306/lnj_db?autoReconnect=true&amp;characterEncoding=euckr"/>		
+	</Context>
+	
+	web.xml(여기)
+	<resource-ref>
+		<description>DB Connection</description>
+		<res-ref-name>jdbc/mysqlConn</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>Container</res-auth>
+	</resource-ref>
+	-->
+	
+	
+	<!-- 웹으로 접속한 사용자가 JSP 파일로 직접 접근할 수 없게 한다.
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>PreventViewingJSPs</web-resource-name>
+			<description>
+				웹으로 접속한 사용자가 JSP파일로 직접 접근할 수 없도록 한다.
+			</description>
+			<url-pattern>*.jsp</url-pattern>
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name></role-name>
+		</auth-constraint>
+	</security-constraint>
+	 -->
+
+
+</web-app>

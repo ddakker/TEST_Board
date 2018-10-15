@@ -1,0 +1,40 @@
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'idea'
+
+ext {
+    javaVersion 		= '1.6'
+    servletVersion 		= '3.1'
+    tomcatVersion 		= '8.0.20'
+    javaEncoding 		= 'MS949'
+    gradleVersion		= '2.12'
+    springVersion 		= '4.1.4.RELEASE'
+    ezframeworkVersion	= '1.0.+'
+    targetServer = project.hasProperty('target') ? project.getProperty('target') : 'local'
+}
+
+sourceCompatibility = javaVersion
+targetCompatibility = javaVersion
+
+
+version = '1.0.0-SNAPSHOT'
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    // https://mvnrepository.com/artifact/javax.servlet/servlet-api
+//    providedCompile group: 'javax.servlet', name: 'servlet-api', version: '2.3'
+
+
+}
+
+
+// 인코딩
+[compileJava, compileTestJava]*.options*.encoding = javaEncoding
+
+
+
+task wrapper(type: Wrapper) {
+    description = 'Generates gradlew[.bat] scripts'
+    gradleVersion = gradleVersion
+}

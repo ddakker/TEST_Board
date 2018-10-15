@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<!-- ===================================================================== -->
+<!--                                                                       -->
+<!--  Log4j Configuration                                                  -->
+<!--                                                                       -->
+<!-- ===================================================================== -->
+
+<!-- $Id: log4j.xml,v 1.1 2008/05/20 07:46:27 ddakker Exp $ -->
+
+<!--
+	| For more configuration infromation and examples see the Jakarta Log4j
+	| owebsite: http://jakarta.apache.org/log4j
+-->
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/"
+	debug="false">
+	<!-- ================================= -->
+	<!-- Preserve messages in a local file -->
+	<!-- ================================= -->
+
+	<!-- A time/date based rolling appender -->
+	<!-- 
+	<appender name="FILE" class="architecture.runtime.logging.log4j.appender.DailyRollingFileAppender">
+		<errorHandler class="architecture.runtime.logging.log4j.OnlyOnceErrorHandler" />
+	 -->
+	<!-- ============================== -->
+	<!-- Append messages to the console -->
+	<!-- ============================== -->
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<!-- <errorHandler class="architecture.runtime.logging.log4j.OnlyOnceErrorHandler" /> -->
+		<param name="Target" value="System.out" />
+		<param name="Threshold" value="DEBUG" />
+
+		<layout class="org.apache.log4j.PatternLayout">
+			<!-- The default pattern: Date Priority [Category] Message\n -->
+			<param name="ConversionPattern"
+				value="%d{ABSOLUTE} %-5p [%c{1}] %m%n" />
+		</layout>
+	</appender>
+	<!-- ================ -->
+	<!-- Limit categories -->
+	<!-- ================ -->
+
+	<!-- Limit the org.apache category to INFO as its DEBUG is verbose -->
+	
+	<!--<category name="org.apache">
+		<priority value="DEBUG" />
+	</category>
+	
+	
+	<category name="org.apache.struts.chain">
+		<priority value="ERROR" />
+	</category>
+
+	<category name="org.apache.struts.util.PropertyMessageResources">
+		<priority value="ERROR" />
+	</category>
+
+	<category name="org.apache.jasper">
+		<priority value="ERROR" />
+	</category>
+	
+	<category name="org.apache.struts.action">
+		<priority value="DEBUG" />
+	</category>
+			
+	<category name="com.ibatis" >
+	    <priority value="DEBUG"/>
+	</category>
+	
+	<category name="java.sql.Connection" >
+	    <priority value="DEBUG"/>
+	</category>
+	
+	<category name="java.sql.PreparedStatement" >
+	    <priority value="DEBUG"/>
+	</category>
+	
+	<category name="java.sql.ResultSet" >
+	    <priority value="WARN"/>
+	</category>
+	
+	<category name="dak.web.framework" >
+	    <priority value="DEBUG"/>
+	</category>-->
+	
+
+
+	<root>
+		<appender-ref ref="CONSOLE" />
+	</root>
+</log4j:configuration>

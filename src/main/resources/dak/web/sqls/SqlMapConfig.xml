@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+
+	<settings 
+		cacheModelsEnabled="true" 
+		enhancementEnabled="true" 
+		lazyLoadingEnabled="true"
+		maxRequests="32" 
+		maxSessions="10" 
+		maxTransactions="5" 
+		useStatementNamespaces="false" 
+	/>
+	
+	<transactionManager type="JDBC">
+		<dataSource type="DBCP">
+
+			<property name="driverClassName" value="org.mariadb.jdbc.Driver"/>
+			<property name="url" value="jdbc:mariadb://192.168.23.23:3306/testdb?interactiveClient=true"/>
+			<property name="username" value="root"/>
+			<property name="password" value="opennaru"/>
+
+			<!--<property name="JDBC.Driver" value="com.mysql.jdbc.Driver"/>
+			<property name="JDBC.ConnectionURL" value="jdbc:mysql://192.168.23.23:3306/testdb?interactiveClient=true"/>
+			<property name="JDBC.Username" value="root"/>
+			<property name="JDBC.Password" value="opennaru"/>-->
+			<!--<property name="Pool.MaximumActiveConnections" value="10"/>
+			<property name="Pool.MaximumIdleConnections" value="5"/>
+			<property name="Pool.MaximumWait" value="60000"/>
+			<property name="Pool.LogAbandoned" value="false"/>
+			<property name="Pool.RemoveAbandoned" value="false"/>
+			<property name="Pool.RemoveAbandonedTimeout" value="50000"/>-->
+
+		</dataSource>
+	</transactionManager> 	
+	
+	<sqlMap resource="dak/web/sqls/Board.xml" />
+		
+</sqlMapConfig>

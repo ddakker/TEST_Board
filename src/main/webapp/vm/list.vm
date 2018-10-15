@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<result>
+#if( $totalItemCount )
+    <totalItemCount>$totalItemCount</totalItemCount>
+#else
+    <totalItemCount/>
+#end
+
+#if( $totalItemCount2 )
+    <totalItemCount2>$totalItemCount2</totalItemCount2>
+#else
+    <totalItemCount2/>
+#end
+
+
+
+#if($list)
+	  <list>
+#foreach( $item in $list )
+#if($item)
+		    <item>
+#set ($keys = $item.keySet())
+#foreach( $key in $keys )
+#if($item.get($key))
+			      <$key><![CDATA[$item.get($key)]]></$key>
+#else
+			      <$key/>
+#end
+#end
+		    </item>
+#end
+#end
+		</list>
+#else
+    <list/>
+#end
+
+
+#if($list2)
+	  <list2>
+#foreach( $item in $list2 )
+#if($item)
+		    <item>
+#set ($keys = $item.keySet())
+#foreach( $key in $keys )
+#if($item.get($key))
+			      <$key><![CDATA[$item.get($key)]]></$key>
+#else
+			      <$key/>
+#end
+#end
+		    </item>
+#end
+#end
+		</list2>
+#else
+    <list2/>
+#end
+
+</result>

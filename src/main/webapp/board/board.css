@@ -1,0 +1,14 @@
+A:link {color:#777777;font-size:9pt;text-decoration:none;}		  /* 링크 걸린것 */
+A:visited {color:#777777;font-size:9pt;text-decoration:none;}	  /* 눌렀던 것 */
+A:hover {color:#5A7EE4;font-size:9pt;text-decoration: none;}	  /* 올렸을때 */
+A:active {color:#777777;font-size:9pt;text-decoration:none;}		  /* 눌렀을때 */
+
+p,br,body,td,th,form,div,select {color:#777777;font-size:9pt;font-family:돋움;}
+
+
+.btBox { BORDER-BOTTOM: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-RIGHT: #cccccc 1px solid; 
+		FONT-SIZE: 9pt; COLOR: #313031; FONT-FAMILY: "돋움";BACKGROUND-COLOR: #FFFFFF;
+		padding-top:0.6mm;padding-bottom:0.6mm }
+		
+.hand		 {cursor:pointer;}
+.handle		 {cursor: move;}
