@@ -34,6 +34,7 @@ dependencies {
 
 war {
     baseName = 'ROOT'
+    version = ''
 }
 
 task wrapper(type: Wrapper) {
