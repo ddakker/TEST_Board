@@ -32,7 +32,9 @@ dependencies {
 // 인코딩
 [compileJava, compileTestJava]*.options*.encoding = javaEncoding
 
-
+war {
+    archiveBaseName.set('ROOT')
+}
 
 task wrapper(type: Wrapper) {
     description = 'Generates gradlew[.bat] scripts'
