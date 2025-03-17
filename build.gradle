@@ -33,7 +33,7 @@ dependencies {
 [compileJava, compileTestJava]*.options*.encoding = javaEncoding
 
 war {
-    archiveBaseName.set('ROOT')
+    baseName = 'ROOT'
 }
 
 task wrapper(type: Wrapper) {
